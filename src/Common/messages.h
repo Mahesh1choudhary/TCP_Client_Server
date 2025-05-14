@@ -1,4 +1,5 @@
 #include "common_libraries.h"
+#include "connection.h"
 
 template<typename T> struct message_header{
     T id{};
@@ -63,3 +64,15 @@ enum class custom_msg_types: uint32_t{
     server_message,
     client_message
 };
+
+
+template<typename T> class connection;
+template<typename T> struct owned_message{
+    std::shared_ptr<connection> remote = nullptr;
+    message<T> msg;
+
+    friend std::ostream& operator << (std::ostream& os, const owned_message<T>& owned_msg){
+        os << owned_message.msg;
+        return os;
+    }
+}
